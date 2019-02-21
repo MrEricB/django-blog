@@ -1,0 +1,12 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+    <h1>{{ current_user }}'s Dashboard</h1>
+
+    {% if blogs %}
+        {% for blog in blogs.all %}
+            <p>{{ blog.title }}</p>
+            <p>by: {{ blog.author }}</p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
