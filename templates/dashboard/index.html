@@ -1,7 +1,7 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-    <h1>{{ current_user }}'s Dashboard</h1>
+    <h1 class="myclass">{{ current_user }}'s Dashboard</h1>
 
     {% if blogs %}
         {% for blog in blogs.all %}
