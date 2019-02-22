@@ -1,0 +1,8 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+    <p>Are you sure you want to delete {{ blog }} by: {{ blog.author }}?</p>
+    <input class='btn btn-danger' type="submit" value="Confirm" />
+    </form> 
+{% endblock %}

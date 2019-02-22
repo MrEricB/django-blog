@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Blog index</h1>
-
+<h1>Welcome To The Blog</h1>
 {% for blog in blogs.all %}
-    {% if blog.is_pub %}
-        <h2><a href="{% url 'detail' blog.id %}">{{ blog.title }}</a></h2>
+    {% if blog.published_date %}
+        <h2><a href="{% url 'blog:detail' blog.id %}">{{ blog.title }}</a></h2>
         <img src="{{ blog.image.url }}" alt="">
         <p>{{ blog.summary }}</p>
-        <p>{{ blog.author }}</p>
-        <p>{{ blog.pk }}</p>
+        <!-- chagne to pub date after add publish feature -->
+        <p>By: {{ blog.author }} </p>
+        <p>{{ blog.created_date|date:"M D Y" }}</p> 
+        <hr>  
     {% endif %}
 {% endfor %}
 {% endblock %}

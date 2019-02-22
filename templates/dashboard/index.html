@@ -1,12 +1,44 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-    <h1 class="myclass">{{ current_user }}'s Dashboard</h1>
+<div class="jumbotron text-center">
+    <h1>Dashboard for:</h1>
+    <h2 class="myclass">{{ current_user }}</h2>
+</div>
+<table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">title</th>
+            <th scope="col">author</th>
+            <th scope="col">created</th>
+            <th scope="col">published</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if blogs %}
+            <!-- loop here -->
+            {% for blog in blogs.all %}
+            <tr>
+                <th scope="row">{{ blog.id}}</th> 
+                <td>{{ blog.title }}</td>
+                <td>{{ blog.author }}</td>
+                <td>{{ blog.created_date }}</td>
 
-    {% if blogs %}
-        {% for blog in blogs.all %}
-            <p>{{ blog.title }}</p>
-            <p>by: {{ blog.author }}</p>
-        {% endfor %}
-    {% endif %}
+                {% if blog.published_date %}
+                  <td>{{ blog.published_date }}</td>
+                {% else  %}
+                  <td><a href="{% url 'blog:publish' blog.id %}" class="btn btn-primary">Publish</a></td>
+                {% endif %}
+                <!-- edit button -->
+                <td><a href="{% url 'blog:edit' blog.id %}" class="btn btn-info">Edit</a></td>
+                <!-- delete button -->
+                <td><a href="{% url 'blog:delete' blog.id %}" class="btn btn-primary">Delete</a></td>                
+            </tr>
+            {% endfor %}
+        {% endif %}
+  
+        </tbody>
+      </table>
+      <p>{{ now }}</p>
 {% endblock %}

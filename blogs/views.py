@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
 from .models import Blog
 
 # Create your views here.
@@ -11,6 +13,34 @@ def detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     return render(request, 'blog/detail.html', {'blog':blog})
 
+@login_required(login_url='/accounts/signup')
+def publish(request, blog_id):
+    # TODO: make sure blog belongs to user or user ins admin
+    if blog_id:
+        blog = Blog.objects.get(id=blog_id)
+        blog.published_date = timezone.now()
+        blog.save()
+        return redirect('dashboard:dashboard_home', user_id=request.user.id)
+
+@login_required(login_url='/accounts/signup')
+def editBlog(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+
+    if request.method == 'POST':
+        # update the blog
+        if request.POST['title']:
+            blog.title = request.POST['title']
+        if request.POST['text']:
+            blog.text = request.POST['text']
+        # if request.FILES['image']:
+        #     blog.image = request.FILES['image']
+
+        blog.save()
+        return redirect('dashboard:dashboard_home', user_id=request.user.id)
+    else:
+        return render(request, 'dashboard/edit_blog.html', {'blog': blog})
+
+# TODO: move createblog to dashboard?? also pass user id to it?
 @login_required(login_url='/accounts/signup')
 def createblog(request):
     if request.method == 'POST':
@@ -33,3 +63,18 @@ def createblog(request):
             return render(request, 'blog/create.html',{'error':'All fields are required.'})
     else:
         return render(request, 'blog/create.html')
+
+
+@login_required(login_url='/accounts/signup')
+def deleteBlog(request, blog_id):
+    # TODO: make sure blog belongs to user or user is an admin
+    if request.method == 'POST':
+        if blog_id:
+            blog = Blog.objects.get(id=blog_id)
+            # delete the blog
+            blog.delete()
+            # redirect back to dashboard
+            return redirect('dashboard:dashboard_home', user_id=request.user.id)
+    else:
+        blog = Blog.objects.get(id=blog_id) 
+        return render(request, 'dashboard/delete_blog.html', {"blog": blog})
