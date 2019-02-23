@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
 
-<!-- {% block content %}
-
+{% block content %}
 {% if error %}
 {{ error }}
 <br />
 <br />
 {% endif %}
 
-<h1>Create</h1>
-
-<form method="POST" action="{% url 'createblog' %}" enctype="multipart/form-data">
+<h1>Create Blog:</h1>
+<form method="POST" action="{% url 'blog:createblog' %}" enctype="multipart/form-data">
 {% csrf_token %}
 Title:
 <br />
@@ -35,5 +33,4 @@ Image:
 <br />
 <input class="btn btn-primary" type="submit" value="Post Blog" />
 </form>
-
-{% endblock %} -->
+{% endblock %}

@@ -4,7 +4,9 @@
 <div class="jumbotron text-center">
     <h1>Dashboard for:</h1>
     <h2 class="myclass">{{ current_user }}</h2>
+    <a href="{% url 'blog:createblog' %}" class="btn btn-success btn-lg">Create New Post</a>
 </div>
+
 <table class="table table-striped">
         <thead>
           <tr>
@@ -12,6 +14,7 @@
             <th scope="col">title</th>
             <th scope="col">author</th>
             <th scope="col">created</th>
+            <th scope="col">Views</th>
             <th scope="col">published</th>
           </tr>
         </thead>
@@ -21,9 +24,10 @@
             {% for blog in blogs.all %}
             <tr>
                 <th scope="row">{{ blog.id}}</th> 
-                <td>{{ blog.title }}</td>
+                <td><a href="{% url 'blog:detail' blog.id %}">{{ blog.title }}</a></td>
                 <td>{{ blog.author }}</td>
                 <td>{{ blog.created_date }}</td>
+                <td>{{ blog.view_count }}</td>
 
                 {% if blog.published_date %}
                   <td>{{ blog.published_date }}</td>
@@ -40,5 +44,4 @@
   
         </tbody>
       </table>
-      <p>{{ now }}</p>
 {% endblock %}

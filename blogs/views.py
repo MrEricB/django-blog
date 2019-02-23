@@ -11,6 +11,9 @@ def home(request):
 
 def detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
+    if request.user != blog.author:
+        blog.view_count += 1
+        blog.save()
     return render(request, 'blog/detail.html', {'blog':blog})
 
 @login_required(login_url='/accounts/signup')
@@ -58,11 +61,11 @@ def createblog(request):
             blog.author = request.user
             blog.save()
             # return redirect('/' + str(blog.id))
-            return redirect('home')
+            return redirect('blog:home')
         else:
-            return render(request, 'blog/create.html',{'error':'All fields are required.'})
+            return render(request, 'blog/createblog.html',{'error':'All fields are required.'})
     else:
-        return render(request, 'blog/create.html')
+        return render(request, 'blog/createblog.html')
 
 
 @login_required(login_url='/accounts/signup')

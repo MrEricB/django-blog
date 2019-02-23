@@ -24,4 +24,17 @@ def dashboard_home(request, user_id):
                                                         "blogs": blogs,
                                                         "can_pub": can_pub })
     else:
-        return redirect('home')
+        return redirect('blog:home')
+
+@login_required(login_url='/accounts/signup')
+def dashboard_charts(request, user_id):
+    if user_id == request.user.id:
+        if request.user.is_superuser:
+            blogs = Blog.objects
+            current_user = 'Administrator'
+        else:
+            blogs = Blog.objects.filter(author=request.user)
+            current_user = request.user
+        return render(request,'dashboard/charts.html', {'blogs': blogs, 'current_user':current_user})
+    else:
+        return redirect('blog:home')

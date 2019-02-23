@@ -3,5 +3,6 @@
 {% block content %}
 <h1>{{ blog.title }}</h1>
 <img src="{{ blog.image.url }}" alt="">
+<p>By {{ blog.author }} @ {{ blog.published_date }} viewed: {{ blog.view_count }}</p>
 <p>{{ blog.text }}</p>
 {% endblock %}
